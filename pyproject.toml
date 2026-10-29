@@ -1,0 +1,40 @@
+[project]
+name = "ai-gateway-assessment"
+version = "0.1.0"
+description = "Reference implementation for MCP and LLM gateway assessment tasks"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "httpx>=0.27,<1",
+  "mcp>=1.12,<2",
+  "pydantic>=2.10,<3",
+  "uvicorn>=0.34,<1",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3,<10",
+  "pytest-asyncio>=0.25,<2",
+]
+
+[project.scripts]
+customer-mcp = "assessment.task1_mcp.server:main"
+mcp-security-gateway = "assessment.task2_security_gateway.main:run"
+mock-mcp-server = "assessment.task2_security_gateway.mock_downstream:run"
+streaming-guardrail = "assessment.task3_streaming_guardrail.main:run"
+model-router = "assessment.task4_model_router.main:run"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/assessment"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
